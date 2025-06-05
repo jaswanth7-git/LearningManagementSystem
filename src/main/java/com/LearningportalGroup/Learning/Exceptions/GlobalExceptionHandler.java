@@ -20,4 +20,13 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidreq(InvalidRequestException e){
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+    }
 }
