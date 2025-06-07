@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/lms/user")
 @RestController
 public class Usercontroller
@@ -20,9 +22,20 @@ public class Usercontroller
             return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getAllusers(){
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
     @PostMapping
     public ResponseEntity<?>postUser(@RequestBody User user){
         User newuser = userService.postUser(user);
         return ResponseEntity.ok(user);
+    }
+
+    @PutMapping
+    public ResponseEntity<?>updateUser(@RequestBody User user){
+        User newuser = userService.updateUser(user);
+        return ResponseEntity.ok(newuser);
     }
 }

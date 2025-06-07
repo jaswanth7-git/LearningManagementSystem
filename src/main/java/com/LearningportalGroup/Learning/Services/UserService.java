@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -29,5 +31,19 @@ public class UserService {
             throw new InvalidRequestException("User Already exist with this Id "+user.getUserId());
         }
         return user;
+    }
+
+    public User updateUser(User user) {
+        if(user == null || !userRepo.existsById(user.getUserId())){
+            throw new UserNotFoundException("User with this id does not exist user id : "+user.getUserId());
+        }else{
+//            User existinguser = userRepo.findById(user.getUserId()).get();
+            userRepo.save(user);
+            return user;
+        }
+    }
+
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
     }
 }

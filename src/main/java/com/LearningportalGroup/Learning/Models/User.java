@@ -9,6 +9,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
     private String name;
+    private String email;
+    private String password;
 
     public int getUserId() {
         return userId;
@@ -42,8 +44,7 @@ public class User {
         this.password = password;
     }
 
-    private String email;
-    private String password;
+
 
     public User (){}
 
