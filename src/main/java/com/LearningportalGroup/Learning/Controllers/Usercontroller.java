@@ -1,5 +1,6 @@
 package com.LearningportalGroup.Learning.Controllers;
 
+import com.LearningportalGroup.Learning.Exceptions.DTOs.RequestDTOs.UserUpdateDTO;
 import com.LearningportalGroup.Learning.Models.User;
 import com.LearningportalGroup.Learning.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class Usercontroller
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllusers(){
+    public ResponseEntity<?> getAllusers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
@@ -33,9 +34,15 @@ public class Usercontroller
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping
-    public ResponseEntity<?>updateUser(@RequestBody User user){
-        User newuser = userService.updateUser(user);
+    @PutMapping("/{id}")
+    public ResponseEntity<?>updateUser(@RequestBody UserUpdateDTO user , @PathVariable int id){
+        UserUpdateDTO newuser = userService.updateUser(user,id);
         return ResponseEntity.ok(newuser);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?>deleteUser(@PathVariable int id){
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }

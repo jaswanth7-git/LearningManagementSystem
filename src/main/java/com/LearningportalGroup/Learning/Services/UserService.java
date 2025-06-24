@@ -1,12 +1,11 @@
 package com.LearningportalGroup.Learning.Services;
 
+import com.LearningportalGroup.Learning.Exceptions.DTOs.RequestDTOs.UserUpdateDTO;
 import com.LearningportalGroup.Learning.Exceptions.InvalidRequestException;
 import com.LearningportalGroup.Learning.Exceptions.UserNotFoundException;
 import com.LearningportalGroup.Learning.Models.User;
 import com.LearningportalGroup.Learning.Repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,17 +32,26 @@ public class UserService {
         return user;
     }
 
-    public User updateUser(User user) {
-        if(user == null || !userRepo.existsById(user.getUserId())){
-            throw new UserNotFoundException("User with this id does not exist user id : "+user.getUserId());
+    public UserUpdateDTO updateUser(UserUpdateDTO user , int id) {
+        if(user == null || !userRepo.existsById(id)){
+            throw new UserNotFoundException("User with this id does not exist user id : "+id);
         }else{
-//            User existinguser = userRepo.findById(user.getUserId()).get();
-            userRepo.save(user);
+            User existinguser = userRepo.findById(id).get();
+            existinguser.setEmail(user.getEmail());
+            existinguser.setName(user.getName());
+            userRepo.save(existinguser);
             return user;
         }
     }
 
     public List<User> getAllUsers() {
         return userRepo.findAll();
+    }
+
+    public void deleteUser(int id) {
+        if(!userRepo.existsById(id)){
+           throw new UserNotFoundException("User not found ID : "+id);
+        }
+        userRepo.deleteById(id);
     }
 }
